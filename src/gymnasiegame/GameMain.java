@@ -44,7 +44,7 @@ public class GameMain implements KeyListener {
 		System.out.println("använd camera för att röra gamescreen!! ");
 		loadImages();
 		gameLoop();
-
+//firstCommit
 	}
 
 	public void loadImages() {
