@@ -3,9 +3,9 @@ package gymnasiegame;
 import java.awt.Image;
 
 public class ShipEntity extends Entity{
-
- 	public ShipEntity (Image image, double xPos, double yPos, int speed){
-      	super(image, xPos, yPos, speed);
+//	private Map map;
+ 	public ShipEntity (Image image, Map map, double xPos, double yPos, int speed){
+      	super(image, map, xPos, yPos, speed);
  	}
  
  	/**
