@@ -3,18 +3,13 @@ package gymnasiegame;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.awt.image.renderable.RenderableImage;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import se.egy.graphics.Drawable;
-import se.egy.graphics.ImgContainer;
 
 public class Map implements Drawable {
 	private int cols, rows;
@@ -22,7 +17,10 @@ public class Map implements Drawable {
 
 	private int[][] tileMap;
 
-	private Image imgForMap;
+	// TileImages, when using piskel.com make sure to fill the entire screen!!
+	private Image WaterTile, EarthTile, WallTile, ForestTile, GrassTile, TreeTile, TreeTileV2, FullTileGrassImage;
+
+	private Image[] TileAimages = new Image[6];
 
 	/**
 	 * Konstruktor Läser in filen och rutornas storlek. I textfilen skall det på
@@ -37,9 +35,23 @@ public class Map implements Drawable {
 	 * @param tileSize  Rutornas storlek i px
 	 */
 	public Map(String pathToMap, int tileSize) {
-		imgForMap = new ImageIcon(getClass().getResource("/MapTile-0.png")).getImage();
-		this.tileSize = tileSize;
 
+		for (int i = 0; i < 6; i++) {
+			TileAimages[i] = new ImageIcon(getClass().getResource("/MapTile-" + i + ".png")).getImage();
+		}
+
+		WaterTile = new ImageIcon(getClass().getResource("/WaterTile.png")).getImage();
+
+		EarthTile = TileAimages[0];
+		GrassTile = TileAimages[1];
+		WallTile = TileAimages[2];
+		ForestTile = TileAimages[3];
+		TreeTile = new ImageIcon(getClass().getResource("/TreeTile-0.png")).getImage();
+		TreeTileV2 = new ImageIcon(getClass().getResource("/TreeTile-1.png")).getImage();
+
+		FullTileGrassImage = TileAimages[5];
+
+		this.tileSize = tileSize;
 
 		// Lägger till slash om det saknas innan filnamn
 		if (pathToMap.charAt(0) != '/')
@@ -94,45 +106,37 @@ public class Map implements Drawable {
 				switch (tile) {
 
 				case 0:
-					g.setColor(Color.black);
-
-					g.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+					g.drawImage(WaterTile, tileSize * x, tileSize * y, null); //
+					// System.out.println("IMG: " + tileSize*y);
 					break;
 				case 1:
-					g.setColor(Color.red);
-
-					g.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+					g.drawImage(EarthTile, tileSize * x, tileSize * y, null); //
+					// System.out.println("IMG: " + tileSize*y);
 					break;
 				case 2:
-					g.setColor(Color.PINK);
-
-					g.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+					g.drawImage(WallTile, tileSize * x, tileSize * y, null); //
+					// System.out.println("IMG: " + tileSize*y);
 					break;
 				case 3:
-					g.setColor(Color.gray);
-
-					g.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+					g.drawImage(ForestTile, tileSize * x, tileSize * y, null); //
+					// System.out.println("IMG: " + tileSize*y);
 					break;
 				case 4:
-					g.setColor(Color.lightGray);
 
-					g.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+					g.drawImage(GrassTile, tileSize * x, tileSize * y, null); //
+					// System.out.println("IMG: " + tileSize*y);
 					break;
 				case 5:
-					g.setColor(Color.green);
-
-					g.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+					g.drawImage(TreeTile, tileSize * x, tileSize * y, null); //
+					// System.out.println("IMG: " + tileSize*y);
 					break;
 				case 6:
-					  
-					  g.drawImage(imgForMap, tileSize*x, tileSize*y, null); //
-					  System.out.println("IMG: " + tileSize*y);
-					 
+					g.drawImage(FullTileGrassImage, tileSize * x, tileSize * y, null); //
+					// System.out.println("IMG: " + tileSize*y);
 					break;
 
 				default:
 					g.setColor(Color.black);
-
 					g.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
 
 				}
@@ -140,7 +144,6 @@ public class Map implements Drawable {
 			}
 		}
 	}
-
 
 	/**
 	 * Antal rader i map-filen
