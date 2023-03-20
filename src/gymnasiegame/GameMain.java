@@ -95,6 +95,7 @@ public class GameMain implements KeyListener {
 		MyPlayer.setDirectionY(0);
 		MyPlayer.setImage(images[0]);
 
+		/*Camera Controls for MyPlayer*/
 		if (MyPlayer.getXPos() < (map.getCols() * map.getTileSize() - gameScreen.getWidth() / 2)
 				|| MyPlayer.getYPos() < (map.getRows() * map.getTileSize() - gameScreen.getHeight() / 2)) {
 			gameScreen.cameraMoveTo(MyPlayer.getXPos() - (gameScreen.getWidth() / 2),
@@ -106,7 +107,6 @@ public class GameMain implements KeyListener {
 			if (MyPlayer.getYPos() < gameScreen.getHeight() / 2) {
 				gameScreen.cameraMoveTo(MyPlayer.getXPos() - (gameScreen.getWidth() / 2), 0);
 			}
-
 			if ((MyPlayer.getXPos() < gameScreen.getWidth() / 2) && (MyPlayer.getYPos() < gameScreen.getHeight() / 2)) {
 				gameScreen.cameraMoveTo(0, 0);
 
