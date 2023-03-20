@@ -22,7 +22,7 @@ public class GameMain implements KeyListener {
 	private AlienEntity alien;
 	private Image shipImg = new ImageIcon(getClass().getResource("/ship.png")).getImage();
 	private ArrayList<Entity> entityList = new ArrayList<>();
-	private GameScreen gameScreen = new GameScreen("GameGyAVersion", 1400, 1200, false);
+	private GameScreen gameScreen = new GameScreen("GameGyAVersion", 700, 600, false);
 
 	private playercharacter MyPlayer;
 	private Image[] images = new Image[7];
@@ -46,6 +46,7 @@ public class GameMain implements KeyListener {
 		System.out.println("använd camera för att röra gamescreen!! ");
 		loadImages();
 		gameLoop();
+
 	}
 
 	public void loadImages() {
@@ -94,8 +95,27 @@ public class GameMain implements KeyListener {
 		MyPlayer.setDirectionY(0);
 		MyPlayer.setImage(images[0]);
 
+		if (MyPlayer.getXPos() < (map.getCols() * map.getTileSize() - gameScreen.getWidth() / 2)
+				|| MyPlayer.getYPos() < (map.getRows() * map.getTileSize() - gameScreen.getHeight() / 2)) {
+			gameScreen.cameraMoveTo(MyPlayer.getXPos() - (gameScreen.getWidth() / 2),
+					MyPlayer.getYPos() - (gameScreen.getHeight() / 2));
+
+			if (MyPlayer.getXPos() < gameScreen.getWidth() / 2) {
+				gameScreen.cameraMoveTo(0, MyPlayer.getYPos() - (gameScreen.getHeight() / 2));
+			}
+			if (MyPlayer.getYPos() < gameScreen.getHeight() / 2) {
+				gameScreen.cameraMoveTo(MyPlayer.getXPos() - (gameScreen.getWidth() / 2), 0);
+			}
+
+			if ((MyPlayer.getXPos() < gameScreen.getWidth() / 2) && (MyPlayer.getYPos() < gameScreen.getHeight() / 2)) {
+				gameScreen.cameraMoveTo(0, 0);
+
+			}
+
+		}
+
 		if (MyPlayer.getActive() == true) {
-			if (keyDown.get("PlayerRight") && MyPlayer.getXPos() < (gameScreen.getWidth() - MyPlayer.getWidth())) {
+			if (keyDown.get("PlayerRight")) {
 				MyPlayer.setDirectionX(1);
 				MyPlayer.setImage(images[3]);
 			}
@@ -107,7 +127,7 @@ public class GameMain implements KeyListener {
 				MyPlayer.setDirectionY(-1);
 				MyPlayer.setImage(images[6]);
 			}
-			if (keyDown.get("PlayerDown") && MyPlayer.getYPos() < gameScreen.getHeight() - MyPlayer.getHight()) {
+			if (keyDown.get("PlayerDown")) {
 				MyPlayer.setDirectionY(1);
 				MyPlayer.setImage(images[5]);
 			} // keyDown.get("fireM");
@@ -133,17 +153,9 @@ public class GameMain implements KeyListener {
 		}
 
 		// kontroll över spelfiguren MyPlayer så den inte åker ur gameScreen
-		if (MyPlayer.getXPos() < 0) {
-			MyPlayer.setXPos(0);
-		}
-		if (MyPlayer.getXPos() > gameScreen.getWidth()) {
-			MyPlayer.setXPos(gameScreen.getWidth() - MyPlayer.getWidth());
-		}
+
 		if (MyPlayer.getYPos() < 0) {
 			MyPlayer.setYPos(0);
-		}
-		if (MyPlayer.getYPos() + MyPlayer.getHight() > gameScreen.getHeight()) {
-			MyPlayer.setYPos(gameScreen.getHeight() - MyPlayer.getHight());
 		}
 
 		// kontroll över missiler från MyPlayercharacter och ShipEntity, och missilernas
