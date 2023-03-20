@@ -33,10 +33,8 @@ public class playercharacter extends Entity {
 		ticks++;
 		setMovingImg();
 		
-		
 		double nx = xPos + dx*speed*(deltaTime/1000000000.0);
 		double ny = yPos + dy*speed*(deltaTime/1000000000.0);
-
 
 		// Kontrollerar om den nya positionen fungerar
 		//blockera Tile 0, Water
@@ -53,30 +51,9 @@ public class playercharacter extends Entity {
 		}else {
 			xPos = nx;
 			yPos = ny;
-		}
-		
-		
-		/*Blockera TreeTile, Tile 2*/
-		if (!validLocationV2Tree(nx, ny)) {
-			if (validLocationV2Tree(nx, yPos)) {
-				// if it doesn't then change our position to the new position
-				xPos = nx;
-			}
-
-			if (validLocationV2Tree(xPos, ny)) {
-				// if it doesn't then change our position to the new position
-				yPos = ny;
-			}	
-		}else {
-			xPos = nx;
-			yPos = ny;
-		}
-		
+		}	
 	}
 
-	
-	
-	
 	
 	private void setMovingImg() {
 		if (ticks % 8 == 0) {

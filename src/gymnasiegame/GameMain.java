@@ -22,7 +22,7 @@ public class GameMain implements KeyListener {
 	private AlienEntity alien;
 	private Image shipImg = new ImageIcon(getClass().getResource("/ship.png")).getImage();
 	private ArrayList<Entity> entityList = new ArrayList<>();
-	private GameScreen gameScreen = new GameScreen("GameGyAVersion", 800, 600, false);
+	private GameScreen gameScreen = new GameScreen("GameGyAVersion", 1400, 1200, false);
 
 	private playercharacter MyPlayer;
 	private Image[] images = new Image[7];

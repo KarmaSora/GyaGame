@@ -144,7 +144,7 @@ public abstract class Entity implements Drawable {
 	
 	
 	public boolean validLocation(double nx, double ny) {
-		if(hitTile(nx, ny, blocked).x != -1) {
+		if(hitTile(nx, ny, blocked).x != -1 ||hitTile(nx, ny, TreeBlockV1).x != -1 ||hitTile(nx, ny, AnotherTileBlock).x != -1 ) {
 			return false;
 		}else {
 			return true;
@@ -189,27 +189,6 @@ public abstract class Entity implements Drawable {
 		return hitTile(xPos, yPos, tileValue);
 	}
 
-	
-	
-	
-	/*Test, block a new Tile*/
-
-	
-	public boolean validLocationV2Tree(double nx, double ny) {
-		if(hitTile(nx, ny, TreeBlockV1).x != -1) {
-			return false;
-		}else {
-			return true;
-		} 
-	}
-	
-	public boolean validLocationV3Test(double nx, double ny) {
-		if(hitTile(nx, ny, AnotherTileBlock).x != -1) {
-			return false;
-		}else {
-			return true;
-		} 
-	}
 	
 	
 	
