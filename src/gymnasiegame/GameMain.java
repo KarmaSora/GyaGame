@@ -1,7 +1,11 @@
 package gymnasiegame;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.*;
+import java.io.File;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,6 +19,11 @@ public class GameMain implements KeyListener {
 	private boolean gamePause = false;
 	private long lastUpdateTime;
 	private Map map;
+	private int GameScore = 0;
+
+	private double worldX, worldY;
+	public Font font = null;
+	private TxtContainer msg;
 
 	private HashMap<String, Boolean> keyDown = new HashMap<>();
 
@@ -24,7 +33,7 @@ public class GameMain implements KeyListener {
 	private ArrayList<Entity> entityList = new ArrayList<>();
 	private GameScreen gameScreen = new GameScreen("GameGyAVersion", 700, 600, false);
 
-	private playercharacter MyPlayer;
+	private PlayerCharacter myPlayer;
 	private Image[] images = new Image[7];
 
 	public GameMain() {
@@ -41,9 +50,20 @@ public class GameMain implements KeyListener {
 		keyDown.put("TPDown", false);
 
 		keyDown.put("fireM", false);
-		keyDown.put("MyPlayerFire", false);
+		keyDown.put("myPlayerFire", false);
 
 		System.out.println("använd camera för att röra gamescreen!! ");
+
+		try {
+			String path = getClass().getResource("/droidloverpi.ttf").getFile();
+			path = URLDecoder.decode(path, "utf-8");
+
+			font = Font.createFont(Font.TRUETYPE_FONT, new File(path));
+			font = font.deriveFont(32f); // Typsnittsstorlek
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		loadImages();
 		gameLoop();
 
@@ -57,15 +77,15 @@ public class GameMain implements KeyListener {
 		// reSizedPlayer = new
 		// ImageIcon(getClass().getResource("/smallPlayer.png")).getImage();
 
-		double MyPlayersXPos = gameScreen.getWidth() / 2;
-		double MyPlayersYPos = 300;
-		int MyPlayerSpeed = 200;
-		int MyPlayerDx = 0;
-		int MyPlayerDy = 0;
+		double myPlayersXPos = gameScreen.getWidth() / 2;
+		double myPlayersYPos = 300;
+		int myPlayerSpeed = 200;
+		int myPlayerDx = 0;
+		int myPlayerDy = 0;
 
-		MyPlayer = new playercharacter(images, map, MyPlayersXPos, MyPlayersYPos, MyPlayerSpeed, MyPlayerDx, MyPlayerDy,
+		myPlayer = new PlayerCharacter(images, map, myPlayersXPos, myPlayersYPos, myPlayerSpeed, myPlayerDx, myPlayerDy,
 				true);
-		entityList.add(MyPlayer);
+		entityList.add(myPlayer);
 
 		double x = gameScreen.getWidth() / 2;
 		double y = gameScreen.getHeight() - shipImg.getHeight(null);
@@ -88,50 +108,75 @@ public class GameMain implements KeyListener {
 	}
 
 	public void update(long deltaTime) {
+		
+		
+	
+		
+		msg = new TxtContainer("Space Invader, Score: " + GameScore , (int) worldX + 30,
+				(int) worldY +30, font, Color.GREEN);
+		
+		
+		/*
+		if (myPlayer.getXPos() > gameScreen.getWidth() / 2 && myPlayer.getYPos() > gameScreen.getHeight() / 2) {
+			msg = new TxtContainer("Space Invader, Score: ", (int) (myPlayer.getXPos() - gameScreen.getWidth() / 2),
+					(int) (myPlayer.getYPos() - 270), font, Color.GREEN);
+		} else {
+			msg = new TxtContainer("Space Invader, Score: ", 30, 30, font, Color.GREEN);
+		}
+		
+		*/
 		ship.setDirectionX(0);
 		ship.setDirectionY(0);
 
-		MyPlayer.setDirectionX(0);
-		MyPlayer.setDirectionY(0);
-		MyPlayer.setImage(images[0]);
+		myPlayer.setDirectionX(0);
+		myPlayer.setDirectionY(0);
+		myPlayer.setImage(images[0]);
 
-		/*Camera Controls for MyPlayer*/
-		if (MyPlayer.getXPos() < (map.getCols() * map.getTileSize() - gameScreen.getWidth() / 2)
-				|| MyPlayer.getYPos() < (map.getRows() * map.getTileSize() - gameScreen.getHeight() / 2)) {
-			gameScreen.cameraMoveTo(MyPlayer.getXPos() - (gameScreen.getWidth() / 2),
-					MyPlayer.getYPos() - (gameScreen.getHeight() / 2));
+		/* Camera Controls for myPlayer */
 
-			if (MyPlayer.getXPos() < gameScreen.getWidth() / 2) {
-				gameScreen.cameraMoveTo(0, MyPlayer.getYPos() - (gameScreen.getHeight() / 2));
-			}
-			if (MyPlayer.getYPos() < gameScreen.getHeight() / 2) {
-				gameScreen.cameraMoveTo(MyPlayer.getXPos() - (gameScreen.getWidth() / 2), 0);
-			}
-			if ((MyPlayer.getXPos() < gameScreen.getWidth() / 2) && (MyPlayer.getYPos() < gameScreen.getHeight() / 2)) {
-				gameScreen.cameraMoveTo(0, 0);
+		/*
+		 * if (myPlayer.getXPos() < (map.getCols() * map.getTileSize() -
+		 * gameScreen.getWidth() / 2) || myPlayer.getYPos() < (map.getRows() *
+		 * map.getTileSize() - gameScreen.getHeight() / 2)) {
+		 * gameScreen.cameraMoveTo(myPlayer.getXPos() - (gameScreen.getWidth() / 2),
+		 * myPlayer.getYPos() - (gameScreen.getHeight() / 2));
+		 * 
+		 * if (myPlayer.getXPos() < gameScreen.getWidth() / 2) {
+		 * gameScreen.cameraMoveTo(0, myPlayer.getYPos() - (gameScreen.getHeight() /
+		 * 2)); } if (myPlayer.getYPos() < gameScreen.getHeight() / 2) {
+		 * gameScreen.cameraMoveTo(myPlayer.getXPos() - (gameScreen.getWidth() / 2), 0);
+		 * } if ((myPlayer.getXPos() < gameScreen.getWidth() / 2) && (myPlayer.getYPos()
+		 * < gameScreen.getHeight() / 2)) { gameScreen.cameraMoveTo(0, 0);
+		 * 
+		 * } }
+		 * 
+		 */
 
-			}
-
-		}
-
-		if (MyPlayer.getActive() == true) {
+		if (myPlayer.getActive() == true) {
 			if (keyDown.get("PlayerRight")) {
-				MyPlayer.setDirectionX(1);
-				MyPlayer.setImage(images[3]);
+				myPlayer.setDirectionX(1);
+				moveMapX(deltaTime);
+
+				myPlayer.setImage(images[3]);
 			}
-			if (keyDown.get("PlayerLeft") && MyPlayer.getXPos() > 0) {
-				MyPlayer.setDirectionX(-1);
-				MyPlayer.setImage(images[1]);
+			if (keyDown.get("PlayerLeft") && myPlayer.getXPos() > 0) {
+				myPlayer.setDirectionX(-1);
+				
+				moveMapX(deltaTime);
+
+				myPlayer.setImage(images[1]);
 			}
-			if (keyDown.get("PlayerUp") && MyPlayer.getYPos() > 0) {
-				MyPlayer.setDirectionY(-1);
-				MyPlayer.setImage(images[6]);
+			if (keyDown.get("PlayerUp") && myPlayer.getYPos() > 0) {
+				myPlayer.setDirectionY(-1);
+				myPlayer.setImage(images[6]);
+				moveMapY(deltaTime);
 			}
 			if (keyDown.get("PlayerDown")) {
-				MyPlayer.setDirectionY(1);
-				MyPlayer.setImage(images[5]);
-			} // keyDown.get("fireM");
+				myPlayer.setDirectionY(1);
+				myPlayer.setImage(images[5]);
+				moveMapY(deltaTime);
 
+			} // keyDown.get("fireM");
 		}
 
 		if (ship.getActive() == true) {
@@ -152,13 +197,13 @@ public class GameMain implements KeyListener {
 			entity.move(deltaTime);
 		}
 
-		// kontroll över spelfiguren MyPlayer så den inte åker ur gameScreen
+		// kontroll över spelfiguren myPlayer så den inte åker ur gameScreen
 
-		if (MyPlayer.getYPos() < 0) {
-			MyPlayer.setYPos(0);
+		if (myPlayer.getYPos() < 0) {
+			myPlayer.setYPos(0);
 		}
 
-		// kontroll över missiler från MyPlayercharacter och ShipEntity, och missilernas
+		// kontroll över missiler från myPlayercharacter och ShipEntity, och missilernas
 		// kollision med aliens
 		if (ship.missile != null && ship.missile.getActive()) {
 			// Egen kod för kontroll om missilen är utanför skärmen.
@@ -174,12 +219,12 @@ public class GameMain implements KeyListener {
 			} catch (Exception e) {
 			}
 		}
-		if (MyPlayer.missileV1 != null && MyPlayer.missileV1.getActive()) {
+		if (myPlayer.missileV1 != null && myPlayer.missileV1.getActive()) {
 			// Egen kod för kontroll om missilen är utanför skärmen.
-			if (MyPlayer.missileV1.getYPos() < 0) {
+			if (myPlayer.missileV1.getYPos() < 0) {
 				System.out.println("tryToReloadWithR");
 				try {
-					MyPlayer.missileV1 = null;
+					myPlayer.missileV1 = null;
 				} catch (Exception e) {
 				}
 			}
@@ -191,7 +236,12 @@ public class GameMain implements KeyListener {
 	}
 
 	public void render() {
-		gameScreen.render(entityList);
+//		gameScreen.render(entityList);
+
+		gameScreen.beginRender();
+		gameScreen.openRender(entityList);
+		gameScreen.openRender(msg);
+		gameScreen.show();
 	}
 
 	public void gameLoop() {
@@ -213,6 +263,8 @@ public class GameMain implements KeyListener {
 				if (!gamePause) {
 					update(deltaTime);
 					render();
+
+					gameScreen.cameraMoveTo(worldX, worldY);
 				}
 				if (gameRunning) { // check if game is still running
 					long elapsedTime = System.currentTimeMillis() - startTime;
@@ -286,19 +338,19 @@ public class GameMain implements KeyListener {
 		}
 
 		if (key == KeyEvent.VK_U) {
-			keyDown.put("MyPlayerFire", true);
-			MyPlayer.tryToFire();
+			keyDown.put("myPlayerFire", true);
+			myPlayer.tryToFire();
 
-			// MyPlayer.missileV1.setDirectionY(-1);
+			// myPlayer.missileV1.setDirectionY(-1);
 			/*
-			 * if(MyPlayer.getDirectionY()!=0) {
-			 * MyPlayer.missileV1.setDirectionY(MyPlayer.getDirectionY()); } else
-			 * {MyPlayer.missileV1.setDirectionY(-1);
+			 * if(myPlayer.getDirectionY()!=0) {
+			 * myPlayer.missileV1.setDirectionY(myPlayer.getDirectionY()); } else
+			 * {myPlayer.missileV1.setDirectionY(-1);
 			 * 
 			 * }
 			 */
-			MyPlayer.missileV1.setDirectionY(MyPlayer.getDirectionY());
-			MyPlayer.missileV1.setDirectionX(MyPlayer.getDirectionX());
+			myPlayer.missileV1.setDirectionY(myPlayer.getDirectionY());
+			myPlayer.missileV1.setDirectionX(myPlayer.getDirectionX());
 
 			System.out.println("missile has been fired");
 		}
@@ -337,8 +389,8 @@ public class GameMain implements KeyListener {
 
 		if (key == KeyEvent.VK_U) {
 			if (gamePause) {
-				keyDown.put("MyPlayerFire", false);
-				// MyPlayer.setActive(false);
+				keyDown.put("myPlayerFire", false);
+				// myPlayer.setActive(false);
 			}
 		}
 
@@ -349,7 +401,7 @@ public class GameMain implements KeyListener {
 
 	public void keyTyped(KeyEvent e) {
 	}
-
+			
 	public void checkCollisionAndRemove() {
 		ArrayList<Entity> removeList = new ArrayList<>();
 
@@ -358,39 +410,65 @@ public class GameMain implements KeyListener {
 			// Egen kod här! Undersök om missilen kolliderar med en alien.
 			// Om så är fallet. Lägg till den i removeList.
 
-			// i börjar med 2 eftersom MyPlayer är nr:0, och ship är nr:1, aliens blir
+			// i börjar med 2 eftersom myPlayer är nr:0, och ship är nr:1, aliens blir
 			// resten
 			for (int i = 2; i < entityList.size(); i++) {
 				if (entityList.get(i).collision(ship.missile)) {
 					removeList.add(entityList.get(i));
 					System.out.println("hitAA");
 					System.out.println("+10p");
-					System.out.println("alien Killed");
+					System.out.println("alien Killed by Ship");
 					ship.missile = null;
 					entityList.removeAll(removeList); // Alt namnet på arraylist
 				}
 			}
 		}
-		if (MyPlayer.missileV1 != null && MyPlayer.missileV1.getActive()) {
+		if (myPlayer.missileV1 != null && myPlayer.missileV1.getActive()) {
 			for (int i = 2; i < entityList.size(); i++) {
-				if (entityList.get(i).collision(MyPlayer.missileV1)) {
+				if (entityList.get(i).collision(myPlayer.missileV1)) {
 					removeList.add(entityList.get(i));
 					System.out.println("hitAA");
 					System.out.println("+10p");
-					System.out.println("alien Killed");
-					MyPlayer.missileV1 = null;
+					System.out.println("alien Killed by Player");
+					GameScore += 10;
+					myPlayer.missileV1 = null;
 					entityList.removeAll(removeList); // Alt namnet på arraylist
 				}
 			}
 		}
 	}
 
-	public void PlayerToMapContact() {
-		/*
-		 * for (int x = 0; x < map.getCols(); x++) { for (int y = 0; y < map.getRows();
-		 * y++) { int tile = tileOfBlock[x][y]; } }
-		 */
+	
 
+	public void moveMapX(double deltaTime) {
+		/**
+		 *  Metoden beräknar av kordinaterna av X kordinaten som sedan används för föflyttning av kamera 
+		 * @param  deltaTime  är tidsskillnaden mellan tiden då spelet startas eller gameLoop
+		 *  anropas och tiden då while loopen körs, deltaTime blir då tiden i sekunder och används för att uppdateringen 
+		 *  inte skall ske för fort
+		 *  
+		 *  Metoden använder spelfigurens (myPlayer) x kordinaten och jämför WorldX med den och sedan uppdatera värdet på worldX
+		 */
+			if(worldX <= myPlayer.getXPos())
+			worldX = myPlayer.getXPos() - gameScreen.getWidth()/2 ;	
+			if( myPlayer.getXPos()< gameScreen.getWidth()/2)
+				worldX = 0;
+	}
+	
+	public void moveMapY(double deltaTime) {
+		/**
+		 *  Metoden beräknar av kordinaterna av Y kordinaten som sedan används för föflyttning av kamera 
+		 * @param deltaTime är tidsskillnaden mellan tiden då spelet startas eller gameLoop
+		 *  anropas och tiden då while loopen körs, deltaTime blir då tiden i sekunder och används för att uppdateringen 
+		 *  inte skall ske för fort
+		 *  
+		 *  Metoden använder spelfigurens (myPlayer) y kordinaten och jämför WorldY med den och sedan uppdatera värdet på worldY
+		 */
+		if(worldY < myPlayer.getYPos()){
+		worldY = myPlayer.getYPos() - gameScreen.getHeight()/2 ;
+		}
+		if( myPlayer.getYPos()< gameScreen.getHeight()/2)
+			worldY = 0;
 	}
 
 	public static void main(String[] args) {

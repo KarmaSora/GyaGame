@@ -5,7 +5,7 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
-public class playercharacter extends Entity {
+public class PlayerCharacter extends Entity {
 
 	public MissileEntity missileV1 = null; // ingen missil!
 
@@ -14,7 +14,7 @@ public class playercharacter extends Entity {
 	private Image  missileImageV1 = new ImageIcon(getClass().getResource("/missile.png")).getImage(); 
 
 
-	public playercharacter(Image[] images, Map map, double xPos, double yPos, int speed, int dx, int dy,
+	public PlayerCharacter(Image[] images, Map map, double xPos, double yPos, int speed, int dx, int dy,
 			boolean active) {
 		super(images[0], map, xPos, yPos, speed, dx, dy, active);
 		this.images = images;
