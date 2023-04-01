@@ -1,4 +1,11 @@
 package gymnasiegame;
+/**
+ * Klassen består av en main function som anropar fler funtioner i en kedja och startar allt
+ *klassen innehåller även hjälp metoder som används för beräkningar och rörelse. 
+ * @author Karam Matar
+ * @version 1.0
+ * @since 2023-03-31
+ */
 
 import java.awt.Color;
 import java.awt.Font;
@@ -15,27 +22,44 @@ import se.egy.graphics.*;
 
 public class GameMain implements KeyListener {
 
+	//används för gameLoop,
 	private boolean gameRunning = true;
+	//används för att pausa// stoppa rendering och uppdateringsmetoderna och därmed pausa spelet
 	private boolean gamePause = false;
+	//används för beräkning av tid 
 	private long lastUpdateTime;
+	//används för att bestämma spelplanen/ kartan
 	private Map map;
+	//score eller guld som beräknas i spelet
 	private int GameScore = 0;
 
+	//variabler för camera, används för föflyttning och hantering av camera 
 	private double worldX, worldY;
+	//Font typ med vilken text kan displayeas på skärmen 
 	public Font font = null;
+	//Texten som skall displayas på skärmen
 	private TxtContainer msg;
-
+	
+	//hashMap för hantering av knappar som trycks
 	private HashMap<String, Boolean> keyDown = new HashMap<>();
-
+	//instans av ShipEntity
 	private ShipEntity ship;
+	//instans av AlienEntity
 	private AlienEntity alien;
+	//bild som representerar ShipEntity
 	private Image shipImg = new ImageIcon(getClass().getResource("/ship.png")).getImage();
+	//arrayList för entites, 
 	private ArrayList<Entity> entityList = new ArrayList<>();
+	//gameScreen, där allt synligt kommer att ske. 
 	private GameScreen gameScreen = new GameScreen("GameGyAVersion", 700, 600, false);
-
+	//instans av PlayerCharacter
 	private PlayerCharacter myPlayer;
+	//array av bilder som används till myPlayer
 	private Image[] images = new Image[7];
 
+	/**klassens konstruktor
+	 * knappar skapas, bilder laddas och en gameloop startas.
+	 */
 	public GameMain() {
 		map = new Map("map2.txt", 32);
 		gameScreen.setBackground(map);
@@ -68,15 +92,14 @@ public class GameMain implements KeyListener {
 		gameLoop();
 
 	}
-
+	/**
+	 * skapar instanser av olika klasser och figurer renderas på var sitt sätt
+	 */
 	public void loadImages() {
 
 		for (int i = 0; i < 7; i++) {
 			images[i] = new ImageIcon(getClass().getResource("/player-" + i + ".png")).getImage();
 		}
-		// reSizedPlayer = new
-		// ImageIcon(getClass().getResource("/smallPlayer.png")).getImage();
-
 		double myPlayersXPos = gameScreen.getWidth() / 2;
 		double myPlayersYPos = 300;
 		int myPlayerSpeed = 200;
@@ -107,50 +130,22 @@ public class GameMain implements KeyListener {
 
 	}
 
-	public void update(long deltaTime) {
-		
-		
 	
-		
+	/**
+	 * @param deltaTime, tid mellan uppdatering
+	 * uppdatera variablers värde och därmed figurers position. 
+	 * kontrollerar tryckta knappar och figurers position och utför händelser beroende på detta info.
+	 */
+	public void update(long deltaTime) {	
 		msg = new TxtContainer("Space Invader, Score: " + GameScore , (int) worldX + 30,
 				(int) worldY +30, font, Color.GREEN);
 		
-		
-		/*
-		if (myPlayer.getXPos() > gameScreen.getWidth() / 2 && myPlayer.getYPos() > gameScreen.getHeight() / 2) {
-			msg = new TxtContainer("Space Invader, Score: ", (int) (myPlayer.getXPos() - gameScreen.getWidth() / 2),
-					(int) (myPlayer.getYPos() - 270), font, Color.GREEN);
-		} else {
-			msg = new TxtContainer("Space Invader, Score: ", 30, 30, font, Color.GREEN);
-		}
-		
-		*/
 		ship.setDirectionX(0);
 		ship.setDirectionY(0);
 
 		myPlayer.setDirectionX(0);
 		myPlayer.setDirectionY(0);
 		myPlayer.setImage(images[0]);
-
-		/* Camera Controls for myPlayer */
-
-		/*
-		 * if (myPlayer.getXPos() < (map.getCols() * map.getTileSize() -
-		 * gameScreen.getWidth() / 2) || myPlayer.getYPos() < (map.getRows() *
-		 * map.getTileSize() - gameScreen.getHeight() / 2)) {
-		 * gameScreen.cameraMoveTo(myPlayer.getXPos() - (gameScreen.getWidth() / 2),
-		 * myPlayer.getYPos() - (gameScreen.getHeight() / 2));
-		 * 
-		 * if (myPlayer.getXPos() < gameScreen.getWidth() / 2) {
-		 * gameScreen.cameraMoveTo(0, myPlayer.getYPos() - (gameScreen.getHeight() /
-		 * 2)); } if (myPlayer.getYPos() < gameScreen.getHeight() / 2) {
-		 * gameScreen.cameraMoveTo(myPlayer.getXPos() - (gameScreen.getWidth() / 2), 0);
-		 * } if ((myPlayer.getXPos() < gameScreen.getWidth() / 2) && (myPlayer.getYPos()
-		 * < gameScreen.getHeight() / 2)) { gameScreen.cameraMoveTo(0, 0);
-		 * 
-		 * } }
-		 * 
-		 */
 
 		if (myPlayer.getActive() == true) {
 			if (keyDown.get("PlayerRight")) {
@@ -175,36 +170,32 @@ public class GameMain implements KeyListener {
 				myPlayer.setDirectionY(1);
 				myPlayer.setImage(images[5]);
 				moveMapY(deltaTime);
-
-			} // keyDown.get("fireM");
+			} 
 		}
 
 		if (ship.getActive() == true) {
 			if (keyDown.get("RightByDButton") && ship.getXPos() < (gameScreen.getWidth() - ship.getWidth())) {
 				ship.setDirectionX(1);
-
 			}
 			if (keyDown.get("leftByAButton") && ship.getXPos() > 0) {
 				ship.setDirectionX(-1);
-
 			}
 			if (keyDown.get("jumpOrTeleportUp") || keyDown.get("TPDown")) {
-//			ship.setYPos(ship.getYPos() + jumpPower);
 				System.out.println("ship has teleported");
 			}
 		}
+		
+		//sätt rörelse till alla entities
 		for (Entity entity : entityList) {
 			entity.move(deltaTime);
 		}
 
 		// kontroll över spelfiguren myPlayer så den inte åker ur gameScreen
-
 		if (myPlayer.getYPos() < 0) {
 			myPlayer.setYPos(0);
 		}
 
-		// kontroll över missiler från myPlayercharacter och ShipEntity, och missilernas
-		// kollision med aliens
+		// kontroll över missiler från myPlayercharacter och ShipEntity, och missilernas kollision med aliens
 		if (ship.missile != null && ship.missile.getActive()) {
 			// Egen kod för kontroll om missilen är utanför skärmen.
 			if (ship.missile.getYPos() < 0) {
@@ -235,6 +226,10 @@ public class GameMain implements KeyListener {
 		}
 	}
 
+	/**
+	 * olika funtioner för rendering av spelfigurer(entities) och msg( texten längst upp på skärmen i spelet)
+	 * 
+	 */
 	public void render() {
 //		gameScreen.render(entityList);
 
@@ -244,8 +239,14 @@ public class GameMain implements KeyListener {
 		gameScreen.show();
 	}
 
+	
+	
+	/**
+	 * skapar variabler som beräknar tid och bestämmer FPS, Frames Per Secound, rendering och uppdaterings metoder anropas här i en loop
+	 * 
+	 */
 	public void gameLoop() {
-		/*
+		/**
 		 * Loop and Pause for game Beräkna tiden från spelstart och skriver ut den på
 		 * skärmen
 		 */
@@ -356,7 +357,8 @@ public class GameMain implements KeyListener {
 		}
 
 	}
-
+	
+	/** Spelets tangentbordslyssnare */
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 
@@ -383,35 +385,30 @@ public class GameMain implements KeyListener {
 		if (key == KeyEvent.VK_P) {
 			if (gamePause) {
 				keyDown.put("fireM", false);
-				// ship.setActive(false);
 			}
 		}
-
 		if (key == KeyEvent.VK_U) {
 			if (gamePause) {
 				keyDown.put("myPlayerFire", false);
-				// myPlayer.setActive(false);
 			}
 		}
-
 		if (key == KeyEvent.VK_R)
 			keyDown.put("reload", false);
-
 	}
-
+	
+	/** Spelets tangentbordslyssnare */
 	public void keyTyped(KeyEvent e) {
 	}
-			
+	
+	
+	/**controll över collision mellan missiler och entities. 
+	 * ifall collision sker, ta bort missile och den träffade entity 
+	 */
 	public void checkCollisionAndRemove() {
 		ArrayList<Entity> removeList = new ArrayList<>();
 
 		// alien <-> missile
 		if (ship.missile != null && ship.missile.getActive()) {
-			// Egen kod här! Undersök om missilen kolliderar med en alien.
-			// Om så är fallet. Lägg till den i removeList.
-
-			// i börjar med 2 eftersom myPlayer är nr:0, och ship är nr:1, aliens blir
-			// resten
 			for (int i = 2; i < entityList.size(); i++) {
 				if (entityList.get(i).collision(ship.missile)) {
 					removeList.add(entityList.get(i));
@@ -438,32 +435,26 @@ public class GameMain implements KeyListener {
 		}
 	}
 
-	
 
+	/**
+	 *  Metoden beräknar av kordinaterna av X kordinaten som sedan används för föflyttning av Camera 
+	 *  
+	 *  @param deltaTime, tid mellan uppdatering
+	 */
 	public void moveMapX(double deltaTime) {
-		/**
-		 *  Metoden beräknar av kordinaterna av X kordinaten som sedan används för föflyttning av kamera 
-		 * @param  deltaTime  är tidsskillnaden mellan tiden då spelet startas eller gameLoop
-		 *  anropas och tiden då while loopen körs, deltaTime blir då tiden i sekunder och används för att uppdateringen 
-		 *  inte skall ske för fort
-		 *  
-		 *  Metoden använder spelfigurens (myPlayer) x kordinaten och jämför WorldX med den och sedan uppdatera värdet på worldX
-		 */
 			if(worldX <= myPlayer.getXPos())
 			worldX = myPlayer.getXPos() - gameScreen.getWidth()/2 ;	
 			if( myPlayer.getXPos()< gameScreen.getWidth()/2)
 				worldX = 0;
-	}
+		}
 	
+	/**
+	 *  Metoden beräknar av kordinaterna av Y kordinaten som sedan används för föflyttning av Camera 
+	 *  
+	 *  @param deltaTime, tid mellan uppdatering
+	 */
 	public void moveMapY(double deltaTime) {
-		/**
-		 *  Metoden beräknar av kordinaterna av Y kordinaten som sedan används för föflyttning av kamera 
-		 * @param deltaTime är tidsskillnaden mellan tiden då spelet startas eller gameLoop
-		 *  anropas och tiden då while loopen körs, deltaTime blir då tiden i sekunder och används för att uppdateringen 
-		 *  inte skall ske för fort
-		 *  
-		 *  Metoden använder spelfigurens (myPlayer) y kordinaten och jämför WorldY med den och sedan uppdatera värdet på worldY
-		 */
+	
 		if(worldY < myPlayer.getYPos()){
 		worldY = myPlayer.getYPos() - gameScreen.getHeight()/2 ;
 		}
@@ -471,6 +462,10 @@ public class GameMain implements KeyListener {
 			worldY = 0;
 	}
 
+	/**
+	 * main metoden, Anropar konstrutorn för GameMain och startar spelet/programmet
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		System.out.println("this is a game, GYA version");
 		System.out.println("note: gameTime starts when game start and can not be paused");

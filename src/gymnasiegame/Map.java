@@ -17,9 +17,10 @@ public class Map implements Drawable {
 
 	private int[][] tileMap;
 
-	// TileImages, when using piskel.com make sure to fill the entire screen!!
+	// TileImages, Bilder som spelplanet skall använda sig av.
 	private Image WaterTile, EarthTile, WallTile, ForestTile, GrassTile, TreeTile, TreeTileV2, FullTileGrassImage;
-
+	
+	//array av bilder som används för Tiles. 
 	private Image[] TileAimages = new Image[6];
 
 	/**
