@@ -5,11 +5,20 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
+/**
+ * En klass som extendar Entity och utökar Entities med att ha en move metod som inte är abstract,
+ * låter figuren föflytta sig i både x och y led. Innehåller även metoder för animation av bilder samt
+ * för hantering av tillåtna /icketillåtna ställen där denna entity får befinna sig.
+ * klassen har även möjlighet att skapa figurer ur en annan klass för att skapa missiler 
+ *	 
+ * @author Karam Matar
+ * @version 1.0
+ * @since 2023-02-14
+ */
 public class PlayerCharacter extends Entity {
 
 	public MissileEntity missileV1 = null; // ingen missil!
 
-	
 	// array av bilder som ändras berodende på playercharacters riktning
 	private Image[] images;
 	//ett antal ticks som används till animering av playercharacter

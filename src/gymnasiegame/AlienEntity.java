@@ -2,6 +2,14 @@ package gymnasiegame;
 
 import java.awt.Image;
 
+/**
+ * En klass som extendar Entity och utökar Entities med att ha en move metod som inte är abstract
+ *
+ * @author Karam Matar
+ * @version 1.0
+ * @since 2023-02-14
+ */
+
 public class AlienEntity extends Entity {
 	/**Konstruktor
 	 * @param image, 	 bilder som AlineEntity skall representeras av

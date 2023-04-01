@@ -4,7 +4,15 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
-
+/**
+ * En klass som extendar Entity och utökar Entities med att ha en move metod som inte är abstract,
+ * låter figuren föflytta sig i både x och y led. 
+ * klassen har även möjlighet att skapa figurer ur en annan klass för att skapa missiler. 
+ *	 
+ * @author Karam Matar
+ * @version 1.0
+ * @since 2023-02-14
+ */
 public class ShipEntity extends Entity {
 
 	// skapar instans av MissileEntity men skapar ingen missil!

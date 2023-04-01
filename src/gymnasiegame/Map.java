@@ -10,7 +10,13 @@ import java.io.InputStreamReader;
 import javax.swing.ImageIcon;
 
 import se.egy.graphics.Drawable;
-
+/**
+ * Klassen består av fler metoder som kan läsa in en .txt fil med siffror som innehåll och sedan ersätter siffror med 
+ * bilder som sätts ihop till en bild. Bilden används sedan som spelplan. 
+ * @author Karam Matar
+ * @version 1.0
+ * @since 2023-03-31
+ */
 public class Map implements Drawable {
 	private int cols, rows;
 	private int tileSize;

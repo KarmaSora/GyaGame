@@ -146,7 +146,7 @@ public abstract class Entity implements Drawable {
 	}
 	/**
 	 * Kontrollerar om spelfiguren ligger på en ruta med ett visst värde.
-	 * @param tileValue
+	 * @param tileValue, värdet på rutorna
 	 * @return koordinaten på rutan i rutnätet med sökt värde Om den inte finns returneras(-1,-1)
 	 */
 	public Point hitTile(int tileValue) {		
@@ -207,7 +207,7 @@ public abstract class Entity implements Drawable {
 	}
 	/**
 	 *  sätter xPos, x positionen,  till ett nytt värde av typen double
-	 * @param xPos
+	 * @param xPos X positionen
 	 */
 	public void setXPos(double xPos) {
 		this.xPos = xPos;
@@ -221,7 +221,7 @@ public abstract class Entity implements Drawable {
 	}
 /**
  * sätter yPos, y positionen, till ett nytt värde av typen double
- * @param yPos
+ * @param yPos, Entities y positionen
  */
 	public void setYPos(double yPos) {
 		this.yPos = yPos;
@@ -235,7 +235,7 @@ public abstract class Entity implements Drawable {
 	}
 	/**
 	 * Sätter en bilb av typen Image
-	 * @param image
+	 * @param image sätter in en bild som representerar Entity
 	 */
 	public void setImage(Image image) {
 		this.image = image;

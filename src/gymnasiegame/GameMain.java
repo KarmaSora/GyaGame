@@ -1,11 +1,5 @@
 package gymnasiegame;
-/**
- * Klassen består av en main function som anropar fler funtioner i en kedja och startar allt
- *klassen innehåller även hjälp metoder som används för beräkningar och rörelse. 
- * @author Karam Matar
- * @version 1.0
- * @since 2023-03-31
- */
+
 
 import java.awt.Color;
 import java.awt.Font;
@@ -20,6 +14,13 @@ import javax.swing.ImageIcon;
 
 import se.egy.graphics.*;
 
+/**
+ * Klassen består av en main function som anropar fler funtioner i en kedja och startar allt
+ *klassen innehåller även hjälp metoder som används för beräkningar och rörelse. 
+ * @author Karam Matar
+ * @version 1.0
+ * @since 2023-03-31
+ */
 public class GameMain implements KeyListener {
 
 	//används för gameLoop,
@@ -35,6 +36,7 @@ public class GameMain implements KeyListener {
 
 	//variabler för camera, används för föflyttning och hantering av camera 
 	private double worldX, worldY;
+	
 	//Font typ med vilken text kan displayeas på skärmen 
 	public Font font = null;
 	//Texten som skall displayas på skärmen
@@ -464,7 +466,7 @@ public class GameMain implements KeyListener {
 
 	/**
 	 * main metoden, Anropar konstrutorn för GameMain och startar spelet/programmet
-	 * @param args
+	 * @param args 	behövs för klassens main , är auto genereated
 	 */
 	public static void main(String[] args) {
 		System.out.println("this is a game, GYA version");
