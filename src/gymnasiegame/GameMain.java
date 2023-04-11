@@ -59,6 +59,9 @@ public class GameMain implements KeyListener {
 	//array av bilder som används till myPlayer
 	private Image[] images = new Image[7];
 
+	private double timeInSecondsCounter = 0;
+
+
 	/**klassens konstruktor
 	 * knappar skapas, bilder laddas och en gameloop startas.
 	 */
@@ -129,7 +132,25 @@ public class GameMain implements KeyListener {
 			alien = new AlienEntity(alienImg, map, xAlien + 100 * i, yAlien, alienSpeed, dxAlien, dyAlien, true);
 			entityList.add(alien);
 		}
-
+		
+		//en lista av olika alien entiteter som skall displayas på olika ställe.
+		alien = new AlienEntity(alienImg, map, 50 , 50, 0, 0, 0, true);
+		entityList.add(alien);
+		
+		alien = new AlienEntity(alienImg, map, map.getCols()*map.getTileSize() -300 , 50, 0, 0, 0, true);
+		entityList.add(alien);
+		
+		alien = new AlienEntity(alienImg, map, 50 , map.getRows()*map.getTileSize() -200, 0, 0, 0, true);
+		entityList.add(alien);	
+		
+		// dessa alien entites som skapas får ligga inom intervallet nedan!!
+		alien = new AlienEntity(alienImg, map, map.getCols()*map.getTileSize() -300 , map.getRows()*map.getTileSize() -200, 0, 0, 0, true);
+		entityList.add(alien);	
+		
+		
+		alien = new AlienEntity(alienImg, map, map.getCols()*map.getTileSize()/2 -500 , map.getRows()*map.getTileSize()/2 -300, 0, 0, 0, true);
+		entityList.add(alien);	
+		
 	}
 
 	
@@ -139,9 +160,9 @@ public class GameMain implements KeyListener {
 	 * kontrollerar tryckta knappar och figurers position och utför händelser beroende på detta info.
 	 */
 	public void update(long deltaTime) {	
-		msg = new TxtContainer("Space Invader, Score: " + GameScore , (int) worldX + 30,
+		msg = new TxtContainer("Space Invader, Score: " + GameScore + "  GameTime: " + timeInSecondsCounter  , (int) worldX + 30,
 				(int) worldY +30, font, Color.GREEN);
-		
+
 		ship.setDirectionX(0);
 		ship.setDirectionY(0);
 
@@ -256,7 +277,6 @@ public class GameMain implements KeyListener {
 		int fps = 60;
 		int updateTime = (int) (1.0 / fps * 1000000000.0);
 		lastUpdateTime = System.nanoTime();
-		double timeInSecondsCounter = 0;
 
 		while (gameRunning) {
 			long deltaTime = System.nanoTime() - lastUpdateTime;
@@ -273,13 +293,19 @@ public class GameMain implements KeyListener {
 					long elapsedTime = System.currentTimeMillis() - startTime;
 					timeInSecondsCounter = (double) elapsedTime / 1000.0;
 
+					
+					  System.out.println("time passed when game Started: " + timeInSecondsCounter);
+
 					if (timeInSecondsCounter >= 1.0) {
 						/*
 						 * gameTime calculator
 						 * 
-						 * System.out.println("time passed when game Started: " + timeInSecondsCounter);
+						 * 
 						 */
-						timeInSecondsCounter = 0;
+						  System.out.println("time passed when game Started: " + timeInSecondsCounter);
+
+				
+					//	timeInSecondsCounter = 0;
 					}
 				}
 			}
