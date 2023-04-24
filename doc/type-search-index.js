@@ -1,1 +1,1 @@
-typeSearchIndex = [{"p":"gymnasiegame","l":"AlienEntity"},{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"gymnasiegame","l":"Entity"},{"p":"gymnasiegame","l":"GameMain"},{"p":"gymnasiegame","l":"Map"},{"p":"gymnasiegame","l":"MissileEntity"},{"p":"gymnasiegame","l":"PlayerCharacter"},{"p":"gymnasiegame","l":"ShipEntity"}];updateSearchResults();
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"gymnasiegame","l":"GameMain"}];updateSearchResults();

@@ -60,7 +60,7 @@ public class GameMain implements KeyListener {
 	private Image[] images = new Image[7];
 
 	private double timeInSecondsCounter = 0;
-
+	private double pauseTime = 0, pauseTimeStart = 0;
 
 	/**klassens konstruktor
 	 * knappar skapas, bilder laddas och en gameloop startas.
@@ -150,6 +150,23 @@ public class GameMain implements KeyListener {
 		
 		alien = new AlienEntity(alienImg, map, map.getCols()*map.getTileSize()/2 -500 , map.getRows()*map.getTileSize()/2 -300, 0, 0, 0, true);
 		entityList.add(alien);	
+		
+		
+		//fyller i 10 aliens i y led vid x=50
+		for(int u = 0; u<(map.getTileSize()*map.getCols())/(alien.getWidth()*alien.getHight()); u++) {
+			if(map.getTile(0, u)== 1) {	
+				alien = new AlienEntity(alienImg, map, 50 , 50 + 100*u, 0, 0, 0, true);
+				entityList.add(alien);		
+			}
+		}
+		
+		//fyller i 10 aliens i x led vid y=50
+		for(int n = 0; n<10; n++) {
+			if(map.getTile(n, 0)== 1) {	
+				alien = new AlienEntity(alienImg, map, 50 + 100*n ,50 , 0, 0, 0, true);
+				entityList.add(alien);		
+			}
+		}
 		
 	}
 
@@ -288,21 +305,23 @@ public class GameMain implements KeyListener {
 					render();
 
 					gameScreen.cameraMoveTo(worldX, worldY);
+				}else{
+					
 				}
 				if (gameRunning) { // check if game is still running
-					long elapsedTime = System.currentTimeMillis() - startTime;
+					long elapsedTime = System.currentTimeMillis() - startTime - (long)pauseTime;
 					timeInSecondsCounter = (double) elapsedTime / 1000.0;
 
 					
-					  System.out.println("time passed when game Started: " + timeInSecondsCounter);
+//					  System.out.println("time passed when game Started: " + timeInSecondsCounter);					????
 
 					if (timeInSecondsCounter >= 1.0) {
 						/*
 						 * gameTime calculator
 						 * 
 						 * 
-						 */
-						  System.out.println("time passed when game Started: " + timeInSecondsCounter);
+						 */	
+//						  System.out.println("time passed when game Started: " + timeInSecondsCounter);					????
 
 				
 					//	timeInSecondsCounter = 0;
@@ -349,6 +368,11 @@ public class GameMain implements KeyListener {
 		}
 		if (key == KeyEvent.VK_SPACE) {
 			System.out.println("pause/start");
+			if(!gamePause) {
+				pauseTimeStart = System.currentTimeMillis();
+			}else {
+				pauseTime += System.currentTimeMillis() - pauseTimeStart;
+			}
 			gamePause = !gamePause;
 		}
 
