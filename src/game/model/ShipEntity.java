@@ -1,9 +1,11 @@
-package gymnasiegame;
+package game.model;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
+
+import game.view.Map;
 /**
  * En klass som extendar Entity och utökar Entities med att ha en move metod som inte är abstract,
  * låter figuren föflytta sig i både x och y led. 

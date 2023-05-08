@@ -1,6 +1,7 @@
-package gymnasiegame;
+package game.model;
 
 import java.awt.Image;
+import game.view.Map;
 
 /**
  * En klass som extendar Entity och utökar Entities med att ha en move metod som inte är abstract

@@ -1,7 +1,8 @@
-package gymnasiegame;
+package game.model;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import game.view.Map;
 
 import javax.swing.ImageIcon;
 

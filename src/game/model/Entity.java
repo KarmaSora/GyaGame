@@ -1,10 +1,10 @@
-package gymnasiegame;
+package game.model;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
-
+import game.view.Map;
 import se.egy.graphics.Drawable;
 
 /**

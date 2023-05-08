@@ -1,4 +1,4 @@
-package gymnasiegame;
+package game.view;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
